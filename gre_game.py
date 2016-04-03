@@ -73,11 +73,11 @@ class Main(object):
         while game_on:
             choice = raw_input('\nWould you like the easy or hard version? \n').lower()
             if choice.startswith('h'):
-                self.reset_score
+                self.reset_score()
                 self.word_game()
                 print 'Given the definition, type the correct word. You have one try.'
             elif choice.startswith('e'):
-                self.reset_score
+                self.reset_score()
                 self.clear_screen()
                 self.num_game()
                 print 'Given the definition, choose the correct number that',
@@ -99,7 +99,7 @@ class Main(object):
     def word_game(self):
         num = self.num_questions()
         for i in range(num):
-            time.sleep(1)
+            time.sleep(2)
             self.clear_screen()
             answer = data.answer()
             data.definition(answer)
@@ -136,4 +136,3 @@ class Main(object):
 
 data = Data()
 g = Main()
-g.game_type()
