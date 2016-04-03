@@ -67,15 +67,14 @@ class Main(object):
         else:
             # Fallback for other operating systems.
             print '\n' * numlines
-
-    def game_type(self):
+    # Prompt to choose easy = number version or hard = word version
+    def start(self):
         game_on = True
         while game_on:
             choice = raw_input('\nWould you like the easy or hard version? \n').lower()
             if choice.startswith('h'):
                 self.reset_score()
                 self.word_game()
-                print 'Given the definition, type the correct word. You have one try.'
             elif choice.startswith('e'):
                 self.reset_score()
                 self.clear_screen()
@@ -84,7 +83,7 @@ class Main(object):
                 'corresponds to the word. You have two tries.'
             else:
                 print 'I don\'t know what that means.'
-
+    # Choose the number of questions
     def num_questions(self):
         while True:
             try:
@@ -95,9 +94,11 @@ class Main(object):
             else:
                 break
         return num
-
+    # Word game layout
     def word_game(self):
         num = self.num_questions()
+        print '\nGiven the definition, type the correct word. You have one try.'
+        raw_input('Press Enter to start...')
         for i in range(num):
             time.sleep(2)
             self.clear_screen()
@@ -124,8 +125,6 @@ class Main(object):
         print 'Your score is %d/%d.' % (self.wins, self.attempts)
         print '-' * 10
         game_on = False
-
-
 
     def num_game(self):
         pass
