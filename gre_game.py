@@ -16,20 +16,20 @@ class Data(object):
     def display_words(self):
         for word in self.words:
             print word
-
+    # Chooses a random word from the wordlist
     def answer(self):
         answer_idx = random.randint(0, len(self.words) - 1)
         answer = self.words[answer_idx]
         del self.words[answer_idx]
         return answer
-
+    # Queries the definition of the answer
     def definition(self, answer):
         query = self.lookup.meaning(answer)
         print '\nDefinition: \n'
         for definition in query:
             print definition, '\n', query[definition]
         print '-' * 75 + '\n'
-
+    # Builds a list consisting of the answer and 3 other random words
     def choices(self,answer):
         my_choices = [answer]
         while len(my_choices) < 4:
@@ -38,7 +38,7 @@ class Data(object):
                 my_choices.append(choice)
         random.shuffle(my_choices)
         print my_choices
-
+    # Prompts user to type the answer 3x if the guess is incorrect
     def practice(self, answer):
         print 'Please type the answer 3x, each on its own line.\n'
         count = 0
