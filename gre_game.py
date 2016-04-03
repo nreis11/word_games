@@ -69,6 +69,7 @@ class Main(object):
             print '\n' * numlines
     # Prompt to choose easy = number version or hard = word version
     def start(self):
+        self.clear_screen()
         game_on = True
         while game_on:
             choice = raw_input('\nWould you like the easy or hard version? \n').lower()
@@ -77,7 +78,6 @@ class Main(object):
                 self.word_game()
             elif choice.startswith('e'):
                 self.reset_score()
-                self.clear_screen()
                 self.num_game()
                 print 'Given the definition, choose the correct number that',
                 'corresponds to the word. You have two tries.'
@@ -134,4 +134,4 @@ class Main(object):
 
 
 data = Data()
-g = Main()
+game = Main()
