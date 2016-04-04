@@ -1,9 +1,17 @@
-# Python 2
 from PyDictionary import PyDictionary
 import random, time, os
 
-class Data(object):
+# Python 2
+# This game quizzes you on your knowledge of GRE words, providing the definition
+# and multiple choices for the answer. If you answer incorrectly, you are prompted
+# to type the word 3x correctly.
 
+# To download the PyDictionary module go to
+# https://pypi.python.org/pypi/PyDictionary/1.5.2
+
+class Data(object):
+    """Contains all the data functions to display the answer, definition, and
+    choices"""
 
     def collect_words(word_file="gre_word_file.txt"):
         """Builds the word database"""
@@ -17,6 +25,7 @@ class Data(object):
     def display_words(self):
         for word in self.words:
             print word
+
     def answer(self):
         """Chooses a random word from the wordlist"""
         answer_idx = random.randint(0, len(self.words) - 1)
@@ -70,6 +79,7 @@ class Game(object):
         else:
             # Fallback for other operating systems.
             print '\n' * numlines
+
     def start(self):
         """Prompt to choose easy = number version or hard = word version."""
         self.clear_screen()
