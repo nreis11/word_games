@@ -4,8 +4,9 @@ import random, time, os
 
 class Data(object):
 
-    # Builds the word database
+
     def collect_words(word_file="gre_word_file.txt"):
+        """Builds the word database"""
         wordlist = open(word_file).read().splitlines()
         return wordlist
 
@@ -16,21 +17,22 @@ class Data(object):
     def display_words(self):
         for word in self.words:
             print word
-    # Chooses a random word from the wordlist
     def answer(self):
+        """Chooses a random word from the wordlist"""
         answer_idx = random.randint(0, len(self.words) - 1)
         answer = self.words[answer_idx]
         del self.words[answer_idx]
         return answer
-    # Queries the definition of the answer
     def definition(self, answer):
+        """Queries the definition of the answer"""
         query = self.lookup.meaning(answer)
         print '\nDefinition: \n'
         for definition in query:
             print definition, '\n', query[definition]
         print '-' * 75 + '\n'
-    # Builds a list consisting of the answer and 3 other random words
+
     def choices(self,answer):
+        """Builds a list consisting of the answer and 3 other random words"""
         my_choices = [answer]
         while len(my_choices) < 4:
             choice = random.choice(self.words)
@@ -38,8 +40,9 @@ class Data(object):
                 my_choices.append(choice)
         random.shuffle(my_choices)
         print my_choices
-    # Prompts user to type the answer 3x if the guess is incorrect
+
     def practice(self, answer):
+        """Prompts user to type the answer 3x if the guess is incorrect"""
         print 'Please type the answer 3x, each on its own line.\n'
         count = 0
         while count < 3:
@@ -51,7 +54,7 @@ class Data(object):
         game_on = False
 
 
-class Main(object):
+class Game(object):
 
     def __init__(self):
         self.wins = 0
@@ -67,8 +70,8 @@ class Main(object):
         else:
             # Fallback for other operating systems.
             print '\n' * numlines
-    # Prompt to choose easy = number version or hard = word version
     def start(self):
+        """Prompt to choose easy = number version or hard = word version."""
         self.clear_screen()
         game_on = True
         while game_on:
@@ -83,8 +86,9 @@ class Main(object):
                 'corresponds to the word. You have two tries.'
             else:
                 print 'I don\'t know what that means.'
-    # Choose the number of questions
+
     def num_questions(self):
+        """Choose the number of questions"""
         while True:
             try:
                 num = int(raw_input('How many questions would you like? (1-20) '))
@@ -94,8 +98,9 @@ class Main(object):
             else:
                 break
         return num
-    # Word game layout
+
     def word_game(self):
+        """Word game layout"""
         num = self.num_questions()
         print '\nGiven the definition, type the correct word. You have one try.'
         raw_input('Press Enter to start...')
@@ -134,4 +139,4 @@ class Main(object):
 
 
 data = Data()
-game = Main()
+game = Game()
