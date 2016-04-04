@@ -35,12 +35,13 @@ class Data(object):
         answer = self.words[answer_idx].lower()
         del self.words[answer_idx]
         return answer
+
     def definition(self, answer):
         """Queries the definition of the answer"""
         query = self.lookup.meaning(answer)
         print '\nDefinition: \n'
         for definition in query:
-            print definition, '\n', query[definition]
+            print definition, '\n', query[definition], '\n'
         print '-' * 75 + '\n'
 
     def choices(self,answer, num=False):
@@ -68,7 +69,6 @@ class Data(object):
             else:
                 print 'Make sure your spelling is correct.'
         print '\nExcellent!'
-
 
 
 class Game(object):
