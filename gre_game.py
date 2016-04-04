@@ -1,3 +1,4 @@
+from __future__ import with_statement
 from PyDictionary import PyDictionary
 import random, time, os
 
