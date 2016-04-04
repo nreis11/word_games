@@ -67,7 +67,7 @@ class Data(object):
                 count += 1
             else:
                 print 'Make sure your spelling is correct.'
-        print 'Excellent!'
+        print '\nExcellent!'
 
 
 
@@ -108,11 +108,14 @@ class Game(object):
         """Choose the number of questions"""
         while True:
             try:
-                num = int(raw_input('How many questions would you like? (1-20) '))
+                num = int(raw_input('How many questions would you like? (1-50) '))
             except Exception:
                 print "That is not a valid number."
                 continue
-            break
+            if num not in range(1,51):
+                print "Please choose a number between 1 and 50."
+            else:
+                break
         return num
 
     def word_game(self):
@@ -120,13 +123,13 @@ class Game(object):
         num = self.num_questions()
         print '\nGiven the definition, type the correct word. You have one try',
         'for each word.'
-        raw_input('Press Enter to start...')
+        raw_input('\nPress Enter to start...')
         for i in range(num):
             time.sleep(2)
             self.clear_screen()
             answer = self.data.answer()
             self.data.definition(answer)
-            self.data.choices(answer)
+            print self.data.choices(answer)
 
             turns = 0
             while turns < 1:
@@ -163,21 +166,24 @@ class Game(object):
 
             turns = 0
             while turns < 2:
-                guess = int(raw_input('\nAnswer: '))
+                try:
+                    guess = int(raw_input('\nAnswer: '))
+                except Exception:
+                    print 'That is not a valid number.'
+                    continue
                 if guess == answer_idx + 1:
                     print 'Correct!'
                     self.wins += 1
                     break
+                elif guess not in range(1, 5):
+                    print 'Please choose a number between 1 and 4.'
                 else:
                     print 'Incorrect.'
                     turns += 1
-                    if turns == 1:
-                        print 'The answer was %s.' % answer
-                        self.data.practice(answer)
+            if turns == 2:
+                print 'The answer was %s.' % answer
             self.attempts += 1
         self.end()
-
-        pass
 
     def end(self):
         print '\nGame Over.\nYour score was %d/%d.' % (self.wins, self.attempts)
