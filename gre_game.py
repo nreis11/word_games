@@ -43,7 +43,7 @@ class Data(object):
             print definition, '\n', query[definition]
         print '-' * 75 + '\n'
 
-    def choices(self,answer):
+    def choices(self,answer, num=False):
         """Builds a list consisting of the answer and 3 other random words"""
         my_choices = [answer]
         while len(my_choices) < 4:
@@ -51,7 +51,11 @@ class Data(object):
             if choice not in my_choices:
                 my_choices.append(choice)
         random.shuffle(my_choices)
-        print my_choices
+        answer_idx = my_choices.index(answer)
+        if num:
+            return enumerate(my_choices, start=1), answer_idx
+        else:
+            return my_choices
 
     def practice(self, answer):
         """Prompts user to type the answer 3x if the guess is incorrect"""
@@ -63,7 +67,8 @@ class Data(object):
                 count += 1
             else:
                 print 'Make sure your spelling is correct.'
-        game_on = False
+        print 'Excellent!'
+
 
 
 class Game(object):
@@ -71,6 +76,7 @@ class Game(object):
     def __init__(self):
         self.wins = 0
         self.attempts = 0
+        self.data = Data()
 
     def clear_screen(self):
         if os.name == "posix":
@@ -109,22 +115,18 @@ class Game(object):
             break
         return num
 
-    def display_engine(self, num):
-        """Prints the definition and choices"""
-
-
     def word_game(self):
         """Word game initializes"""
-        data = Data()
         num = self.num_questions()
-        print '\nGiven the definition, type the correct word. You have one try.'
+        print '\nGiven the definition, type the correct word. You have one try',
+        'for each word.'
         raw_input('Press Enter to start...')
         for i in range(num):
             time.sleep(2)
             self.clear_screen()
-            answer = data.answer()
-            data.definition(answer)
-            data.choices(answer)
+            answer = self.data.answer()
+            self.data.definition(answer)
+            self.data.choices(answer)
 
             turns = 0
             while turns < 1:
@@ -140,13 +142,41 @@ class Game(object):
                     turns += 1
                     if turns == 1:
                         print 'The answer was %s.' % answer
-                        data.practice(answer)
+                        self.data.practice(answer)
             self.attempts += 1
         self.end()
 
     def num_game(self):
+        """Num game initalizes"""
         print 'Given the definition, choose the correct number that',
-        'corresponds to the word. You have two tries.'
+        print 'corresponds to the word. \nYou have two tries.'
+        num = self.num_questions()
+        raw_input('Press Enter to start...')
+        for i in range(num):
+            time.sleep(2)
+            self.clear_screen()
+            answer = self.data.answer()
+            self.data.definition(answer)
+            choices, answer_idx = self.data.choices(answer, num)
+            for choice in choices:
+                print choice
+
+            turns = 0
+            while turns < 2:
+                guess = int(raw_input('\nAnswer: '))
+                if guess == answer_idx + 1:
+                    print 'Correct!'
+                    self.wins += 1
+                    break
+                else:
+                    print 'Incorrect.'
+                    turns += 1
+                    if turns == 1:
+                        print 'The answer was %s.' % answer
+                        self.data.practice(answer)
+            self.attempts += 1
+        self.end()
+
         pass
 
     def end(self):
