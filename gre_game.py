@@ -3,8 +3,8 @@ import random, time, os
 
 # Python 2
 # This game quizzes you on your knowledge of GRE words, providing the definition
-# and multiple choices for the answer. If you answer incorrectly, you are prompted
-# to type the word 3x correctly.
+# and multiple choices for the answer. If you answer incorrectly in the advanced
+# version, you are prompted to type the word 3x correctly.
 
 # To download the PyDictionary module go to
 # https://pypi.python.org/pypi/PyDictionary/1.5.2
@@ -22,15 +22,17 @@ class Data(object):
 
     def collect_words(self, word_file="gre_word_file.txt"):
         """Builds the word database"""
-        wordlist = open(word_file).read().splitlines()
-        return wordlist
+        with open(word_file) as wordlist:
+            wordlist = wordlist.read().splitlines()
+            return wordlist
 
     def display_words(self):
         for word in self.words:
             print word
 
     def answer(self):
-        """Chooses a random word from the wordlist"""
+        """Chooses a random word from the wordlist and removes the word
+        from the list"""
         answer_idx = random.randint(0, len(self.words) - 1)
         answer = self.words[answer_idx].lower()
         del self.words[answer_idx]
@@ -186,7 +188,9 @@ class Game(object):
         self.end()
 
     def end(self):
-        print '\nGame Over.\nYour score was %d/%d.' % (self.wins, self.attempts)
+        print '\nGame Over.\nYour score: %d/%d.' % (self.wins, self.attempts)
+        if self.wins == self.attempts:
+            print 'Perfect!'
         print '-' * 10
         self.game_on = False
 
