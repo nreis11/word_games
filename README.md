@@ -8,5 +8,5 @@ Usage
 
 Options
 - Choose between Easy or Hard version:
-    Easy = Answer by entering the corresponding number to the word
-    Hard = Answer by typing in the correct word
+    \t\nEasy = Answer by entering the corresponding number to the word
+    \t\nHard = Answer by typing in the correct word
