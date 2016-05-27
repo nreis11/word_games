@@ -1,9 +1,11 @@
 from __future__ import with_statement
 from PyDictionary import PyDictionary
-import random, time, os
+import random
+import time
+import os
 
 # Python 2
-# This game quizzes you on your knowledge of GRE words, providing the definition
+# Description: This game quizzes you on your knowledge of GRE words, providing the definition
 # and multiple choices for the answer. If you answer incorrectly in the advanced
 # version, you are prompted to type the word 3x correctly.
 
@@ -28,13 +30,20 @@ class Data(object):
             return wordlist
 
     def display_words(self):
+        """Test function to make sure self.collect_words() function worked correctly."""
         for word in self.words:
             print word
 
-    def answer(self):
+    def get_answer(self):
         """Chooses a random word from the wordlist and removes the word
-        from the list"""
-        answer_idx = random.randint(0, len(self.words) - 1)
+        from the list to prevent repeats"""
+        while True:
+            try:
+                answer_idx = random.randint(0, len(self.words) - 1)
+            except Exception:
+                print 'Error retrieving word. Trying again...'
+                continue
+            break
         answer = self.words[answer_idx].lower()
         del self.words[answer_idx]
         return answer
@@ -62,7 +71,8 @@ class Data(object):
             return my_choices
 
     def practice(self, answer):
-        """Prompts user to type the answer 3x if the guess is incorrect"""
+        """Prompts user to type the answer 3x if the guess is incorrect within
+        the hard version of the game"""
         print 'Please type the answer 3x, each on its own line.\n'
         count = 0
         while count < 3:
@@ -75,13 +85,14 @@ class Data(object):
 
 
 class Game(object):
-
+    """This is the game engine that determines the workflow of the game"""
     def __init__(self):
         self.wins = 0
         self.attempts = 0
         self.data = Data()
 
     def clear_screen(self):
+        """Clears the screen"""
         if os.name == "posix":
             # Unix/Linux/MacOS/BSD/etc
             os.system('clear')
@@ -97,18 +108,17 @@ class Game(object):
         self.clear_screen()
         self.game_on = True
         while self.game_on:
+            self.reset_score()
             choice = raw_input('Would you like the easy or hard version? \n').lower()
             if choice == 'easy':
-                self.reset_score()
                 self.num_game()
             elif choice == 'hard':
-                self.reset_score()
                 self.word_game()
             else:
                 print 'I don\'t know what that means.'
 
     def num_questions(self):
-        """Choose the number of questions"""
+        """Prompts the user for the number of questions"""
         while True:
             try:
                 num = int(raw_input('How many questions would you like? (1-50) '))
@@ -130,7 +140,7 @@ class Game(object):
         for i in range(num):
             time.sleep(2)
             self.clear_screen()
-            answer = self.data.answer()
+            answer = self.data.get_answer()
             self.data.definition(answer)
             print self.data.choices(answer)
 
@@ -161,7 +171,7 @@ class Game(object):
         for i in range(num):
             time.sleep(2)
             self.clear_screen()
-            answer = self.data.answer()
+            answer = self.data.get_answer()
             self.data.definition(answer)
             choices, answer_idx = self.data.choices(answer, num)
             for choice in choices:
@@ -189,6 +199,7 @@ class Game(object):
         self.end()
 
     def end(self):
+        """Game summary"""
         print '\nGame Over.\nYour score: %d/%d.' % (self.wins, self.attempts)
         if self.wins == self.attempts:
             print 'Perfect!'
@@ -196,6 +207,7 @@ class Game(object):
         self.game_on = False
 
     def reset_score(self):
+        """Resets the score"""
         self.wins, self.attempts = 0, 0
 
 
