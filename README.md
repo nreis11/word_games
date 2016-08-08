@@ -1,12 +1,10 @@
-# GRE Vocab Game
+# Word Games
 
-Tired of learning GRE words with flashcards? Put your knowledge to the test
-with this vocab game.
+Requirements
+- Python 3
+- PyDictionary module
+- Virtual env (http://docs.python-guide.org/en/latest/dev/virtualenvs/)
+- Use requirements.txt to install modules ($ pip install -r requirements.txt)
 
 Usage
-- Run gre_game.py to start
-
-Options
-- Choose between Easy or Hard version:
-    - Easy = Answer by entering the corresponding number to the word
-    - Hard = Answer by typing in the correct word
+- Run main.py to start
