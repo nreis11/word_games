@@ -1,0 +1,6 @@
+beautifulsoup4==4.4.1
+click==6.6
+futures==3.0.5
+goslate==1.5.1
+PyDictionary==1.5.2
+requests==2.10.0
