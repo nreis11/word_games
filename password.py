@@ -12,7 +12,7 @@ import os
 # https://pypi.python.org/pypi/PyDictionary/1.5.2
 
 def create_word_list():
-    word_file = "password/1000.txt"
+    word_file = "password/wordlist.txt"
     wordlist = open(word_file).read().splitlines()
     words = []
     for word in wordlist:
