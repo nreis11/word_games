@@ -43,9 +43,8 @@ class Data(object):
                 print('Error retrieving word. Trying again...')
                 continue
             break
-        answer = self.words[answer_idx].lower()
-        del self.words[answer_idx]
-        return answer
+        return self.words.pop(answer_idx).lower()
+
 
     def definition(self, answer):
         """Queries the definition of the answer"""
@@ -58,7 +57,7 @@ class Data(object):
                 continue
         print('\nDefinition: \n')
         for definition in query:
-            print(definition, '\n', query[definition], '\n')
+            print(definition, '\n', ', '.join(query[definition]))
         print('-' * 75 + '\n')
 
     def choices(self,answer, num=False):
@@ -109,6 +108,13 @@ class Game(object):
             # Fallback for other operating systems.
             print('\n' * numlines)
 
+    def pretty_print(self, collection):
+        for i in range(len(collection)):
+            if i != len(collection) - 1:
+                print(collection[i], end=', ')
+            else:
+                print(collection[i])
+
     def start(self):
         """Prompt to choose easy = number version or hard = word version."""
         self.clear_screen()
@@ -148,7 +154,9 @@ class Game(object):
             self.clear_screen()
             answer = self.data.get_answer()
             self.data.definition(answer)
-            print(self.data.choices(answer))
+            # print(self.data.choices(answer))
+            choices = self.data.choices(answer)
+            self.pretty_print(choices)
 
             turns = 0
             while turns < 1:

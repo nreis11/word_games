@@ -20,7 +20,7 @@ def clear_screen(numlines=100):
 
 def start():
     clear_screen()
-    print("\nWhich game would you like to play? (Type 'q' to quit")
+    print("\nWhich game would you like to play? (Type 'q' to quit)")
 
     game_list = ['Idioms', 'Unscrambler', 'Password', 'GRE Game']
 
