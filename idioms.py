@@ -1,4 +1,4 @@
-import random, os
+import random
 import time
 
 # Python 3
@@ -38,7 +38,7 @@ def restart(attempts, idioms):
         if choice[0] == 'y':
             game(attempts, idioms)
         else:
-            print ("I don't know what that means.")
+            print("I don't know what that means.")
 
 
 def censor(word):
@@ -60,33 +60,33 @@ def game(attempts, idioms):
         sentence = random.choice(idioms)
         idioms.remove(sentence)
         result, answer = joiner(sentence)
-        print ('\n' + result )
+        print('\n' + result )
         turns = 0
         while turns < 3:
             guess = input('\n> ').lower()
             turns += 1
             if guess == answer:
-                print ('Correct!')
+                print('Correct!')
                 wins += 1
                 break
             else:
-                print ('Incorrect')
+                print('Incorrect')
                 if turns == 3:
-                    print ('\nThe answer was', answer)
-    print ('Your score: %i/%i' % (wins, attempts))
+                    print('\nThe answer was', answer)
+    print('Your score: %i/%i' % (wins, attempts))
     restart(attempts, idioms)
 
 def start():
-    choice = game_type()
-    idioms = build_data(choice)
+    difficulty = game_type()
+    idioms = build_data(difficulty)
     while True:
         try:
             attempts = int(input('\nHow many questions would you like? '))
         except Exception:
-            print ('That is not a valid number.')
+            print('That is not a valid number.')
             continue
         break
-    print ('\nYou have 3 tries to guess the word in the blank for these',
+    print('\nYou have 3 tries to guess the word in the blank for these',
            'common expressions. \nGood luck!')
     time.sleep(2)
     game(attempts, idioms)
