@@ -3,11 +3,12 @@
 from wordhoard import Synonyms
 import time
 import random
-import os
+import sys
 
 wins = attempts = 0
 SYN_LOOKUP = Synonyms
 WORD_FILE_LOC = "password/wordlist.txt"
+NUM_CLUES = 3
 
 def create_word_list():
     wordlist = open(WORD_FILE_LOC).read().splitlines()
@@ -19,11 +20,11 @@ def create_word_list():
     return words
 
 def restart():
-    choice = input("Play again: Y or N? ").lower()
-    if choice[0] == "y":
+    choice = input("Play again: Y or N? ").strip().lower()
+    if choice == "y":
         game()
-    elif choice[0] == "n":
-        os._exit(1)
+    elif choice == "n":
+        sys.exit()
     else:
         print("I don't know what that means.")
         restart()
@@ -41,7 +42,7 @@ def game():
         password = words.pop()
         clues = get_clues(password)
 
-    while idx < 3:
+    while idx < NUM_CLUES:
         clue = clues[idx]
         now = time.time()
         future = now + 10
@@ -57,7 +58,7 @@ def game():
         else:
             print("\nIncorrect")
             idx += 1
-            if idx == 3:
+            if idx == NUM_CLUES:
                 print(f"\nThe password was {password}.")
 
     attempts += 1
