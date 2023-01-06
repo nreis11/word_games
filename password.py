@@ -1,70 +1,80 @@
-#/usr/local/bin/Python3
+# /usr/local/bin/Python3
 
-from PyDictionary import PyDictionary
+from wordhoard import Synonyms
 import time
 import random
 import os
 
-# TO DO!
-# Install PyDictionary for Python 3
-
-# To download the PyDictionary module go to
-# https://pypi.python.org/pypi/PyDictionary/1.5.2
+wins = attempts = 0
+SYN_LOOKUP = Synonyms
+WORD_FILE_LOC = "password/wordlist.txt"
 
 def create_word_list():
-    word_file = "password/wordlist.txt"
-    wordlist = open(word_file).read().splitlines()
+    wordlist = open(WORD_FILE_LOC).read().splitlines()
     words = []
     for word in wordlist:
         if len(word) > 3:
             words.append(word)
+    random.shuffle(words)
     return words
 
-wins, attempts = 0, 0
-
 def restart():
-    choice = ''
-    while choice != 'y' and choice != 'n':
-        choice = input('\nPlay again: Y or N? ').lower()
-    if choice == 'y':
+    choice = input("Play again: Y or N? ").lower()
+    if choice[0] == "y":
         game()
+    elif choice[0] == "n":
+        os._exit(1)
+    else:
+        print("I don't know what that means.")
+        restart()
+
+def get_clues(password):
+    syn = SYN_LOOKUP(search_string=password)
+    return syn.find_synonyms()
 
 def game():
-    words = create_word_list()
-    lookup = PyDictionary()
     global attempts, wins
     idx = 0
-    answer = random.choice(words)
+    password = None
+    clues = None
+    while clues is None:
+        password = words.pop()
+        clues = get_clues(password)
+
     while idx < 3:
-        clue = lookup.synonym(answer)[idx]
+        clue = clues[idx]
         now = time.time()
         future = now + 10
-        print('\nClue: ' + clue)
-        guess = input('Guess: ').lower()
-        if guess == answer or guess + 's' == answer or guess == answer[:-3]:
+        print("\nClue: " + clue)
+        guess = input("Guess: ").lower()
+        if guess == password or guess + "s" == password or guess == password[:-3]:
             print("\nCorrect!")
             wins += 1
             break
         elif now > future:
-            print("You ran out of time! The answer was %s." % answer)
+            print(f"You ran out of time! The password was {password}.")
             break
         else:
-            print("\nWrong.")
+            print("\nIncorrect")
             idx += 1
             if idx == 3:
-                print("\nThe answer was %s." % answer)
+                print(f"\nThe password was {password}.")
 
     attempts += 1
     print("Game over. Your score was %d / %d." % (wins, attempts))
-    print('-' * 10)
-    words.remove(answer)
+    print("-" * 10)
     restart()
 
+
 def start():
-    print("\nWelcome to Password. Given 3 clues, try to guess",
-    "the word. You have 10 seconds to respond to each clue. Good luck!")
-    delay = input('Press any key to continue...')
+    print(
+        "\nWelcome to Password. Given 3 clues, try to guess",
+        "the word. You have 10 seconds to respond to each clue. Good luck!\n",
+    )
+    delay = input("Press Return or Enter to continue...")
     game()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
+    words = create_word_list()
     start()

@@ -34,7 +34,7 @@ def game_type():
 def restart(attempts, idioms):
     choice = ''
     while choice != 'n':
-        choice = input('\nPlay again: Y or N? ').lower()
+        choice = input('\nPlay again: Y or N? ').lower().strip()
         if choice[0] == 'y':
             game(attempts, idioms)
         else:
